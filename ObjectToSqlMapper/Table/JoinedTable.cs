@@ -4,34 +4,31 @@
 
 	using ObjectToSqlMapper.Utils;
 
-	public class JoinedTable : ISqlConstituent
+	public class JoinedTable : Table
 	{
 		private const string Template = "JOIN [{0}].[{1}] {2}";
 
 		private readonly string ruleForCombination = Environment.NewLine;
 
-		private readonly string tableName;
-
-		private readonly string schemaName;
-
-		private readonly string tableAlias;
-
 		private readonly ISqlConstituent joinedTableOn;
 
-		public JoinedTable(string schemaName, string tableName, string tableAlias, ISqlConstituent joinedTableOn)
+		public JoinedTable(
+			string schema,
+			string table,
+			string alias,
+			IAliasable parentTable,
+			ISqlConstituent parentTableColumn,
+			ISqlConstituent childTableColumn) : base(schema, table, alias)
 		{
-			this.tableName = tableName;
-			this.schemaName = schemaName;
-			this.tableAlias = tableAlias;
-			this.joinedTableOn = joinedTableOn;
+			this.joinedTableOn = new JoinedTableOn(parentTableColumn, childTableColumn, parentTable, this);
 		}
 
-		public string Expression
+		public override string Expression
 		{
 			get
 			{
-				return Template.FormatCurrentCulture(this.schemaName, this.tableName, this.tableAlias) + 
-					this.ruleForCombination + 
+				return Template.FormatCurrentCulture(this.SchemaName, this.TableName, this.Alias) +
+					this.ruleForCombination +
 					this.joinedTableOn.Expression;
 			}
 		}

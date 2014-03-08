@@ -2,9 +2,11 @@
 {
 	using ObjectToSqlMapper.Utils;
 
-	public class Table : ISqlConstituent
+	public class Table : ISqlConstituent, IAliasable
 	{
-		private const string SqlTableTemplate = "FROM [{0}].[{1}] as {2}";
+		private const string SqlTableTemplate = "FROM [{0}].[{1}] {2}";
+
+		private const string NameTemplate = "[{0}].[{1}]";
 
 		public Table(string schema, string table, string alias)
 		{
@@ -19,7 +21,15 @@
 
 		public string Alias { get; private set; }
 
-		public string Expression
+		public string Name
+		{
+			get
+			{
+				return NameTemplate.FormatCurrentCulture(this.SchemaName, this.TableName);
+			}
+		}
+
+		public virtual string Expression
 		{
 			get
 			{
