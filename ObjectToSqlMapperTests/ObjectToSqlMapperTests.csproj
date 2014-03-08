@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>c78038db-fcc3-4d05-906c-b1ceccc5dfa7</ProjectGuid>
+    <ProjectGuid>{F312985A-C223-4A33-80C6-48F0E5339E28}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ObjectToSqlMapperTests</RootNamespace>
@@ -50,8 +50,15 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ColumnTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelectStatementBuilderTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ObjectToSqlMapper\ObjectToSqlMapper.csproj">
+      <Project>{8faac498-0712-44fb-a93e-d026188adddd}</Project>
+      <Name>ObjectToSqlMapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectToSqlMapper", "ObjectToSqlMapper.csproj", "{8FAAC498-0712-44FB-A93E-D026188ADDDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectToSqlMapperTests", "..\ObjectToSqlMapperTests\ObjectToSqlMapperTests.csproj", "{F312985A-C223-4A33-80C6-48F0E5339E28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{8FAAC498-0712-44FB-A93E-D026188ADDDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FAAC498-0712-44FB-A93E-D026188ADDDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FAAC498-0712-44FB-A93E-D026188ADDDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F312985A-C223-4A33-80C6-48F0E5339E28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F312985A-C223-4A33-80C6-48F0E5339E28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F312985A-C223-4A33-80C6-48F0E5339E28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F312985A-C223-4A33-80C6-48F0E5339E28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
