@@ -1,5 +1,7 @@
 ﻿namespace ObjectToSqlMapper
 {
+	using System.Dynamic;
+
 	using ObjectToSqlMapper.Utils;
 
 	public abstract class Column : ISqlConstituent
@@ -8,12 +10,16 @@
 
 		private const string NoAliasExpressionTemplate = StringExtensions.Tab + "{0}";
 
-		private string tableAlias;
-
 		protected Column(string field)
 		{
 			this.Field = field;
-			this.tableAlias = string.Empty;
+			this.TableAlias = string.Empty;
+		}
+
+		protected Column(string field, IAliasable table) : this(field)
+		{
+			table.CheckWhetherArgumentIsNull("table");
+			this.TableAlias = table.Alias;
 		}
 
 		public string Field { get; private set; }
@@ -31,15 +37,12 @@
 			get
 			{
 				return
-					string.IsNullOrWhiteSpace(this.tableAlias) ?
+					string.IsNullOrWhiteSpace(this.TableAlias) ?
 							NoAliasExpressionTemplate.FormatCurrentCulture(this.Field) :
-							AliasExpressionTemplate.FormatCurrentCulture(this.tableAlias, this.Field);
+							AliasExpressionTemplate.FormatCurrentCulture(this.TableAlias, this.Field);
 			}
 		}
 
-		public void SetTableAlias(string tblAlias)
-		{
-			this.tableAlias = tblAlias;
-		}
+		protected string TableAlias { get; set; }
 	}
 }

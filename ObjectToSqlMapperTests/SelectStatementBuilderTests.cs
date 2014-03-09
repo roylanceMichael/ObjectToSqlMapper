@@ -24,8 +24,8 @@
 			public void BuildSelectStringWithNoForeignTable()
 			{
 				// arrange
-				var column = new NormalColumn("Test");
 				var table = new Table("Hello", "Kitty", "hk");
+				var column = new NormalColumn("Test", table);
 
 				var builder = new SelectStatementBuilder(
 					new List<ISqlConstituent> { column },
@@ -38,7 +38,7 @@
 
 				// assert
 				const string ExpectedResult = @"SELECT
-	Test
+	hk.Test
 FROM [Hello].[Kitty] hk";
 
 				AssertSameCharactersWithoutSpaces(ExpectedResult, selectStatement);
@@ -48,8 +48,8 @@ FROM [Hello].[Kitty] hk";
 			public void BuildSelectStringWithForeignTable()
 			{
 				// arrange
-				var column = new NormalColumn("Test");
 				var table = new Table("Hello", "Kitty", "hk");
+				var column = new NormalColumn("Test", table);
 
 				var foreignColumn = new ForeignColumn("Sample");
 				var joinedTable = new JoinedTable("Something", "Somewhere", "ss", table, column, foreignColumn);

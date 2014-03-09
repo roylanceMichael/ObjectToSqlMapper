@@ -14,7 +14,7 @@
 
 		private readonly IAliasable joinedTableAlias;
 
-		public JoinedTableOn(Column parentTableColumn, Column joinedTableColumn, IAliasable parentTableAlias, IAliasable joinedTableAlias)
+		public JoinedTableOn(NormalColumn parentTableColumn, ForeignColumn joinedTableColumn, IAliasable parentTableAlias, IAliasable joinedTableAlias)
 		{
 			parentTableColumn.CheckWhetherArgumentIsNull("parentTableColumn");
 			joinedTableColumn.CheckWhetherArgumentIsNull("joinedTableColumn");
@@ -27,7 +27,6 @@
 			this.joinedTableAlias = joinedTableAlias;
 
 			// set aliases
-			parentTableColumn.SetTableAlias(this.parentTableAlias.Alias);
 			joinedTableColumn.SetTableAlias(this.joinedTableAlias.Alias);
 		}
 
