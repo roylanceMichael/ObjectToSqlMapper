@@ -65,8 +65,8 @@ FROM [Hello].[Kitty] hk";
 
 				// assert
 				const string ExpectedResult = @"SELECT
-	Test,
-	Sample
+	hk.Test,
+	ss.Sample
 FROM [Hello].[Kitty] hk
 JOIN [Something].[Somewhere] ss
 	ON hk.Test = ss.Sample";

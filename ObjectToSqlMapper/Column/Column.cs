@@ -4,9 +4,16 @@
 
 	public abstract class Column : ISqlConstituent
 	{
+		private const string AliasExpressionTemplate = StringExtensions.Tab + "{0}.{1}";
+
+		private const string NoAliasExpressionTemplate = StringExtensions.Tab + "{0}";
+
+		private string tableAlias;
+
 		protected Column(string field)
 		{
 			this.Field = field;
+			this.tableAlias = string.Empty;
 		}
 
 		public string Field { get; private set; }
@@ -19,12 +26,20 @@
 			}
 		}
 
-		public string Expression
+		public virtual string Expression
 		{
 			get
 			{
-				return StringExtensions.Tab + this.Field;
+				return
+					string.IsNullOrWhiteSpace(this.tableAlias) ?
+							NoAliasExpressionTemplate.FormatCurrentCulture(this.Field) :
+							AliasExpressionTemplate.FormatCurrentCulture(this.tableAlias, this.Field);
 			}
+		}
+
+		public void SetTableAlias(string tblAlias)
+		{
+			this.tableAlias = tblAlias;
 		}
 	}
 }

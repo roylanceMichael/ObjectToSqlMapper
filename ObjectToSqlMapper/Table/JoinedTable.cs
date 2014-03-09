@@ -17,8 +17,8 @@
 			string table,
 			string alias,
 			IAliasable parentTable,
-			ISqlConstituent parentTableColumn,
-			ISqlConstituent childTableColumn) : base(schema, table, alias)
+			Column parentTableColumn,
+			Column childTableColumn) : base(schema, table, alias)
 		{
 			this.joinedTableOn = new JoinedTableOn(parentTableColumn, childTableColumn, parentTable, this);
 		}
