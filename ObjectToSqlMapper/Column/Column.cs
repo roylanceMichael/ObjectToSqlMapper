@@ -6,9 +6,9 @@
 
 	public abstract class Column : ISqlConstituent
 	{
-		private const string AliasExpressionTemplate = StringExtensions.Tab + "{0}.{1}";
+		private const string AliasExpressionTemplate = StringExtensions.Tab + "[{0}].[{1}]";
 
-		private const string NoAliasExpressionTemplate = StringExtensions.Tab + "{0}";
+		private const string NoAliasExpressionTemplate = StringExtensions.Tab + "[{0}]";
 
 		protected Column(string field)
 		{
