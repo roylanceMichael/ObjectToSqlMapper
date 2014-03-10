@@ -38,7 +38,7 @@
 
 				// assert
 				const string ExpectedResult = @"SELECT
-	hk.Test
+	[hk].[Test]
 FROM [Hello].[Kitty] hk";
 
 				AssertSameCharactersWithoutSpaces(ExpectedResult, selectStatement);
@@ -65,10 +65,10 @@ FROM [Hello].[Kitty] hk";
 
 				// assert
 				const string ExpectedResult = @"SELECT
-	hk.Test,
-	ss.Sample
+	[hk].[Test],
+	[ss].[Sample]
 FROM [Hello].[Kitty] hk
-JOIN [Something].[Somewhere] ss
+FULL OUTER JOIN [Something].[Somewhere] ss
 	ON hk.Test = ss.Sample";
 
 				AssertSameCharactersWithoutSpaces(ExpectedResult, selectStatement);

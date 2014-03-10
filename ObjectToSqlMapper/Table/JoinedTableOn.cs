@@ -4,7 +4,7 @@
 
 	public class JoinedTableOn : ISqlConstituent
 	{
-		private const string JoinedTemplate = StringExtensions.Tab + " ON {0}.{1} = {2}.{3}";
+		private const string JoinedTemplate = StringExtensions.Tab + " ON [{0}].[{1}] = [{2}].[{3}]";
 
 		private readonly ISqlConstituent parentTableColumn;
 
