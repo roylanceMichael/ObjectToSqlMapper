@@ -30,7 +30,7 @@
 			IAliasable parentTable,
 			NormalColumn parentTableColumn,
 			ForeignColumn childTableColumn,
-			JoinType joinType = JoinType.Full) : base(schema, table, alias)
+			JoinType joinType = JoinType.LeftOuter) : base(schema, table, alias)
 		{
 			this.joinedTableOn = new JoinedTableOn(parentTableColumn, childTableColumn, parentTable, this);
 			
