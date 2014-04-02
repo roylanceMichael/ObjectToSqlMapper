@@ -8,27 +8,33 @@
 
 	public class SelectStatementBuilder : IBuilder<string>
 	{
-		private readonly IList<ISqlConstituent> tableColumns;
+		private readonly IList<ISqlConstituent> primaryColumns;
+ 
+		private readonly IList<ISqlConstituent> normalColumns;
 
-		private readonly IList<ISqlConstituent> foreignTableColumns;
+		private readonly IList<ISqlConstituent> otherColumns; 
+
+		private readonly IList<ISqlConstituent> foreignColumns;
 
 		private readonly ISqlConstituent table;
 
 		private readonly IList<ISqlConstituent> foreignTables; 
 
 		public SelectStatementBuilder(
-			IList<ISqlConstituent> tableColumns,
-			IList<ISqlConstituent> foreignTableColumns,
+			IList<ISqlConstituent> columns,
 			ISqlConstituent table,
 			IList<ISqlConstituent> foreignTables)
 		{
-			tableColumns.CheckWhetherArgumentIsNull("tableColumns");
-			foreignTableColumns.CheckWhetherArgumentIsNull("foreignTableColumns");
+			columns.CheckWhetherArgumentIsNull("columns");
 			table.CheckWhetherArgumentIsNull("table");
 			foreignTables.CheckWhetherArgumentIsNull("foreignTables");
 
-			this.tableColumns = tableColumns;
-			this.foreignTableColumns = foreignTableColumns;
+			// get columns
+			this.normalColumns = GetNormalColumns(columns).ToList();
+			this.foreignColumns = GetForeignColumns(columns).ToList();
+			this.primaryColumns = GetPrimaryColumns(columns).ToList();
+			this.otherColumns = this.GetOtherColumns(columns).ToList();
+
 			this.table = table;
 			this.foreignTables = foreignTables;
 		}
@@ -54,31 +60,48 @@
 			return workspace.ToString().Trim();
 		}
 
+		private static IEnumerable<ISqlConstituent> GetPrimaryColumns(IEnumerable<ISqlConstituent> sqlConstituents)
+		{
+			return sqlConstituents.OfType<PrimaryColumn>();
+		}
+
+		private static IEnumerable<ISqlConstituent> GetNormalColumns(IEnumerable<ISqlConstituent> sqlConstituents)
+		{
+			return sqlConstituents.OfType<NormalColumn>();
+		}
+
+		private static IEnumerable<ISqlConstituent> GetForeignColumns(IEnumerable<ISqlConstituent> sqlConstituents)
+		{
+			return sqlConstituents.OfType<ForeignColumn>();
+		}
+
+		private IEnumerable<ISqlConstituent> GetOtherColumns(IEnumerable<ISqlConstituent> sqlConstituents)
+		{
+			return sqlConstituents.Except(this.primaryColumns).Except(this.normalColumns).Except(this.foreignColumns);
+		}
+
 		private IEnumerable<ISqlConstituent> AllCombinedColumns()
 		{
-			// get a unique list of all the column names
-			var hashSet = new HashSet<ISqlConstituent>();
-
 			// primary keys first
-			foreach (var tableColumn in this.tableColumns.OfType<PrimaryColumn>())
+			foreach (var tableColumn in this.primaryColumns)
 			{
-				hashSet.Add(tableColumn);
 				yield return tableColumn;
 			}
 
 			// all others later
-			foreach (var tableColumn in this.tableColumns.Where(constituent => hashSet.All(sqlConstituent => sqlConstituent.Expression != constituent.Expression)))
+			foreach (var tableColumn in this.normalColumns)
 			{
-				hashSet.Add(tableColumn);
 				yield return tableColumn;
 			}
 
-			foreach (var foreignTableColumn in this.foreignTableColumns
-				.Where(foreignTableColumn => 
-					hashSet.All(constituent => constituent.Expression != foreignTableColumn.Expression)))
+			foreach (var foreignTableColumn in this.foreignColumns)
 			{
-				hashSet.Add(foreignTableColumn);
 				yield return foreignTableColumn;
+			}
+
+			foreach (var otherColumn in this.otherColumns)
+			{
+				yield return otherColumn;
 			}
 		}
 

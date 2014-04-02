@@ -29,7 +29,6 @@
 
 				var builder = new SelectStatementBuilder(
 					new List<ISqlConstituent> { column },
-					new List<ISqlConstituent>(),
 					table,
 					new List<ISqlConstituent>());
 
@@ -55,8 +54,7 @@ FROM [Hello].[Kitty] hk";
 				var joinedTable = new JoinedTable("Something", "Somewhere", "ss", table, column, foreignColumn);
 
 				var builder = new SelectStatementBuilder(
-					new List<ISqlConstituent> { column },
-					new List<ISqlConstituent> { foreignColumn },
+					new List<ISqlConstituent> { column, foreignColumn },
 					table,
 					new List<ISqlConstituent> { joinedTable });
 
@@ -68,8 +66,8 @@ FROM [Hello].[Kitty] hk";
 	[hk].[Test],
 	[ss].[Sample]
 FROM [Hello].[Kitty] hk
-FULL OUTER JOIN [Something].[Somewhere] ss
-	ON hk.Test = ss.Sample";
+LEFT OUTER JOIN [Something].[Somewhere] ss
+	ON [hk].[Test] = [ss].[Sample]";
 
 				AssertSameCharactersWithoutSpaces(ExpectedResult, selectStatement);
 			}
