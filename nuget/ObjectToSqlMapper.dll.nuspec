@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>ObjectToSqlMapper</id>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
     <authors>mike.roylance</authors>
     <owners>mike.roylance</owners>
     <licenseUrl>https://github.com/roylanceMichael/ObjectToSqlMapper/blob/master/license.txt</licenseUrl>
@@ -10,7 +10,7 @@
     <iconUrl>https://raw.github.com/roylanceMichael/ObjectToSqlMapper/master/SQL.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A simple library for mapping objects to sql statements.</description>
-    <releaseNotes>Simplified constructor for the table, put all primary key, normal, foreign and user defined columns in single list.</releaseNotes>
+    <releaseNotes>Building a correct SQL statement from the builder, even if differing combinations for columns may be added by the user.</releaseNotes>
     <copyright>Copyright 2014 Mike Roylance</copyright>
     <tags></tags>
   </metadata>

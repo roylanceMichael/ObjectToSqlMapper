@@ -28,7 +28,7 @@
 			string table,
 			string alias,
 			IAliasable parentTable,
-			NormalColumn parentTableColumn,
+			Column parentTableColumn,
 			ForeignColumn childTableColumn,
 			JoinType joinType = JoinType.LeftOuter) : base(schema, table, alias)
 		{

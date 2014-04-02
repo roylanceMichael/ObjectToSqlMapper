@@ -82,26 +82,57 @@
 
 		private IEnumerable<ISqlConstituent> AllCombinedColumns()
 		{
+			// enforce duplicates at this level, too
+			var uniqueHashSet = new HashSet<string>();
+
 			// primary keys first
 			foreach (var tableColumn in this.primaryColumns)
 			{
+				if (uniqueHashSet.Contains(tableColumn.Expression))
+				{
+					continue;
+				}
+
+				uniqueHashSet.Add(tableColumn.Expression);
+
 				yield return tableColumn;
 			}
 
 			// all others later
 			foreach (var tableColumn in this.normalColumns)
 			{
+				if (uniqueHashSet.Contains(tableColumn.Expression))
+				{
+					continue;
+				}
+
+				uniqueHashSet.Add(tableColumn.Expression);
+
 				yield return tableColumn;
 			}
 
-			foreach (var foreignTableColumn in this.foreignColumns)
+			foreach (var tableColumn in this.foreignColumns)
 			{
-				yield return foreignTableColumn;
+				if (uniqueHashSet.Contains(tableColumn.Expression))
+				{
+					continue;
+				}
+
+				uniqueHashSet.Add(tableColumn.Expression);
+
+				yield return tableColumn;
 			}
 
-			foreach (var otherColumn in this.otherColumns)
+			foreach (var tableColumn in this.otherColumns)
 			{
-				yield return otherColumn;
+				if (uniqueHashSet.Contains(tableColumn.Expression))
+				{
+					continue;
+				}
+
+				uniqueHashSet.Add(tableColumn.Expression);
+
+				yield return tableColumn;
 			}
 		}
 
