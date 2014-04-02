@@ -42,6 +42,7 @@
     <Compile Include="Column\Column.cs" />
     <Compile Include="Column\ForeignColumn.cs" />
     <Compile Include="Column\NormalColumn.cs" />
+    <Compile Include="Column\PrimaryColumn.cs" />
     <Compile Include="IAliasable.cs" />
     <Compile Include="IBuilder.cs" />
     <Compile Include="ISqlConstituent.cs" />

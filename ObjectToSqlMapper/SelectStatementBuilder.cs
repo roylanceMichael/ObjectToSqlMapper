@@ -59,6 +59,14 @@
 			// get a unique list of all the column names
 			var hashSet = new HashSet<ISqlConstituent>();
 
+			// primary keys first
+			foreach (var tableColumn in this.tableColumns.OfType<PrimaryColumn>())
+			{
+				hashSet.Add(tableColumn);
+				yield return tableColumn;
+			}
+
+			// all others later
 			foreach (var tableColumn in this.tableColumns.Where(constituent => hashSet.All(sqlConstituent => sqlConstituent.Expression != constituent.Expression)))
 			{
 				hashSet.Add(tableColumn);
