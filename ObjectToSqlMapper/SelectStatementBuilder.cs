@@ -18,7 +18,7 @@
 
 		private readonly ISqlConstituent table;
 
-		private readonly IList<ISqlConstituent> foreignTables; 
+		private readonly IList<ISqlConstituent> foreignTables;
 
 		public SelectStatementBuilder(
 			IList<ISqlConstituent> columns,

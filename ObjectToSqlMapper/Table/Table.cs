@@ -4,15 +4,18 @@
 
 	public class Table : ISqlConstituent, IAliasable
 	{
-		private const string SqlTableTemplate = "FROM [{0}].[{1}] {2}";
+		private const string SqlTableTemplate = "FROM {3}{0}{4}.{3}{1}{4} {2}";
 
-		private const string NameTemplate = "[{0}].[{1}]";
+		private const string NameTemplate = "{2}{0}{3}.{2}{1}{3}";
 
-		public Table(string schema, string table, string alias)
+		private readonly FormatSystemModel formatModel;
+
+		public Table(string schema, string table, string alias, SqlType sqlType = SqlType.SqlServer)
 		{
 			this.SchemaName = schema;
 			this.TableName = table;
 			this.Alias = alias;
+			this.formatModel = sqlType.BuildFormatSystemModel();
 		}
 
 		public string SchemaName { get; private set; }
@@ -33,7 +36,7 @@
 		{
 			get
 			{
-				return SqlTableTemplate.FormatCurrentCulture(this.SchemaName, this.TableName, this.Alias);
+				return SqlTableTemplate.FormatCurrentCulture(this.SchemaName, this.TableName, this.Alias, this.formatModel.Beginning, this.formatModel.Ending);
 			}
 		}
 	}

@@ -51,8 +51,10 @@
     <Compile Include="Table\JoinedTable.cs" />
     <Compile Include="Table\JoinedTableOn.cs" />
     <Compile Include="Table\Table.cs" />
+    <Compile Include="Utils\FormatSystemModel.cs" />
     <Compile Include="Utils\JoinType.cs" />
     <Compile Include="Utils\ObjectExtensions.cs" />
+    <Compile Include="Utils\SqlType.cs" />
     <Compile Include="Utils\StringExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

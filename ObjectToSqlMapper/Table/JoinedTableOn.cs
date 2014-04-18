@@ -2,9 +2,9 @@
 {
 	using ObjectToSqlMapper.Utils;
 
-	public class JoinedTableOn : ISqlConstituent
+	internal class JoinedTableOn : ISqlConstituent
 	{
-		private const string JoinedTemplate = StringExtensions.Tab + " ON [{0}].[{1}] = [{2}].[{3}]";
+		private const string JoinedTemplate = StringExtensions.Tab + " ON {4}{0}{5}.{4}{1}{5} = {4}{2}{5}.{4}{3}{5}";
 
 		private readonly ISqlConstituent parentTableColumn;
 
@@ -14,7 +14,9 @@
 
 		private readonly IAliasable joinedTableAlias;
 
-		public JoinedTableOn(Column parentTableColumn, ForeignColumn joinedTableColumn, IAliasable parentTableAlias, IAliasable joinedTableAlias)
+		private readonly FormatSystemModel formatModel;
+
+		public JoinedTableOn(Column parentTableColumn, ForeignColumn joinedTableColumn, IAliasable parentTableAlias, IAliasable joinedTableAlias, SqlType sqlType)
 		{
 			parentTableColumn.CheckWhetherArgumentIsNull("parentTableColumn");
 			joinedTableColumn.CheckWhetherArgumentIsNull("joinedTableColumn");
@@ -25,6 +27,7 @@
 			this.joinedTableColumn = joinedTableColumn;
 			this.parentTableAlias = parentTableAlias;
 			this.joinedTableAlias = joinedTableAlias;
+			this.formatModel = sqlType.BuildFormatSystemModel();
 
 			// set aliases
 			joinedTableColumn.SetTableAlias(this.joinedTableAlias.Alias);
@@ -46,7 +49,9 @@
 					this.parentTableAlias.Alias, 
 					this.parentTableColumn.Name, 
 					this.joinedTableAlias.Alias, 
-					this.joinedTableColumn.Name);
+					this.joinedTableColumn.Name,
+					this.formatModel.Beginning,
+					this.formatModel.Ending);
 			}
 		}
 	}

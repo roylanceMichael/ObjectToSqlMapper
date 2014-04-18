@@ -1,22 +1,23 @@
 ﻿namespace ObjectToSqlMapper
 {
-	using System.Dynamic;
-
 	using ObjectToSqlMapper.Utils;
 
 	public abstract class Column : ISqlConstituent
 	{
-		private const string AliasExpressionTemplate = StringExtensions.Tab + "[{0}].[{1}]";
+		private const string AliasExpressionTemplate = StringExtensions.Tab + "{2}{0}{3}.{2}{1}{3}";
 
-		private const string NoAliasExpressionTemplate = StringExtensions.Tab + "[{0}]";
+		private const string NoAliasExpressionTemplate = StringExtensions.Tab + "{1}{0}{2}";
 
-		protected Column(string field)
+		private readonly FormatSystemModel formatModel;
+
+		protected Column(string field, SqlType sqlType)
 		{
 			this.Field = field;
 			this.TableAlias = string.Empty;
+			this.formatModel = sqlType.BuildFormatSystemModel();
 		}
 
-		protected Column(string field, IAliasable table) : this(field)
+		protected Column(string field, IAliasable table, SqlType sqlType) : this(field, sqlType)
 		{
 			table.CheckWhetherArgumentIsNull("table");
 			this.TableAlias = table.Alias;
@@ -38,8 +39,8 @@
 			{
 				return
 					string.IsNullOrWhiteSpace(this.TableAlias) ?
-							NoAliasExpressionTemplate.FormatCurrentCulture(this.Field) :
-							AliasExpressionTemplate.FormatCurrentCulture(this.TableAlias, this.Field);
+							NoAliasExpressionTemplate.FormatCurrentCulture(this.Field, this.formatModel.Beginning, this.formatModel.Ending) :
+							AliasExpressionTemplate.FormatCurrentCulture(this.TableAlias, this.Field, this.formatModel.Beginning, this.formatModel.Ending);
 			}
 		}
 

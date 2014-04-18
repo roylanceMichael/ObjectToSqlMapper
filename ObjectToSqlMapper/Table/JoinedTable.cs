@@ -7,7 +7,7 @@
 
 	public class JoinedTable : Table
 	{
-		private const string Template = "{0} JOIN [{1}].[{2}] {3}";
+		private const string Template = "{0} JOIN {4}{1}{5}.{4}{2}{5} {3}";
 
 		private static readonly Dictionary<JoinType, string> JoinTypeMap = new Dictionary<JoinType, string>
 			                                                                   {
@@ -23,6 +23,8 @@
 
 		private readonly ISqlConstituent joinedTableOn;
 
+		private readonly FormatSystemModel formatModel;
+
 		public JoinedTable(
 			string schema,
 			string table,
@@ -30,9 +32,11 @@
 			IAliasable parentTable,
 			Column parentTableColumn,
 			ForeignColumn childTableColumn,
-			JoinType joinType = JoinType.LeftOuter) : base(schema, table, alias)
+			JoinType joinType = JoinType.LeftOuter,
+			SqlType sqlType = SqlType.SqlServer) : base(schema, table, alias)
 		{
-			this.joinedTableOn = new JoinedTableOn(parentTableColumn, childTableColumn, parentTable, this);
+			this.joinedTableOn = new JoinedTableOn(parentTableColumn, childTableColumn, parentTable, this, sqlType);
+			this.formatModel = sqlType.BuildFormatSystemModel();
 			
 			if (!JoinTypeMap.ContainsKey(joinType))
 			{
@@ -46,7 +50,7 @@
 		{
 			get
 			{
-				return Template.FormatCurrentCulture(this.joinType, this.SchemaName, this.TableName, this.Alias) +
+				return Template.FormatCurrentCulture(this.joinType, this.SchemaName, this.TableName, this.Alias, this.formatModel.Beginning, this.formatModel.Ending) +
 					this.ruleForCombination +
 					this.joinedTableOn.Expression;
 			}
